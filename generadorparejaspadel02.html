@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="es">
+<!-- Head section remains unchanged -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generador Parejas Padel</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --padel-blue: #1e3d8f;
+            --padel-green: #8dc63f;
+        }
+        .custom-shadow {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        .logo-container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .logo-container img {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+        }
+        .countdown {
+            font-size: 5rem;
+            font-weight: bold;
+            color: var(--padel-blue);
+            text-align: center;
+            margin: 1rem 0;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .countdown.visible {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Body content remains unchanged until pairsList -->
+    <div class="max-w-md mx-auto p-4">
+        <div class="logo-container mb-6">
+            <img src="https://github.com/rafelsr/imagenes/blob/main/generador__parejas.jpg?raw=true" 
+                 alt="Generador Parejas Padel" 
+                 class="custom-shadow rounded-lg">
+        </div>
+
+        <div class="flex gap-2 mb-6">
+            <input type="text" id="playerInput" 
+                   class="flex-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                   placeholder="Introduce nombre del jugador">
+            <button onclick="addPlayer()" 
+                    class="bg-green-500 text-white px-4 rounded-lg hover:bg-green-600 transition-colors">
+                <i class="fas fa-user-plus"></i>
+            </button>
+        </div>
+
+        <div class="mb-6">
+            <h3 class="text-lg font-bold mb-2 text-blue-900" id="playerCount">JUGADORES (0)</h3>
+            <div id="playerList" class="space-y-2"></div>
+        </div>
+
+        <button onclick="startCountdownAndGenerate()" 
+                id="generateButton" 
+                class="w-full bg-blue-900 text-white py-3 rounded-lg mb-6 hidden hover:bg-blue-800 transition-colors">
+            <i class="fas fa-random mr-2"></i>
+            Generar Parejas
+        </button>
+
+        <div id="countdown" class="countdown"></div>
+        <div id="pairsList" class="space-y-2"></div>
+
+        <div class="text-right mt-8 text-gray-600 italic">
+            @rafelsr v.0.2
+        </div>
+    </div>
+
+    <script>
+        let players = [];
+        
+        // Previous functions remain unchanged
+        function updateUI() {
+            document.getElementById('playerCount').textContent = `JUGADORES (${players.length})`;
+            
+            document.getElementById('generateButton').className = 
+                players.length >= 2 
+                    ? 'w-full bg-blue-900 text-white py-3 rounded-lg mb-6 hover:bg-blue-800 transition-colors'
+                    : 'hidden';
+            
+            const playerList = document.getElementById('playerList');
+            playerList.innerHTML = players.map((player, index) => `
+                <div class="flex justify-between items-center bg-white p-3 rounded-lg custom-shadow">
+                    <span>${player}</span>
+                    <button onclick="removePlayer(${index})" class="text-red-500 hover:text-red-700">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function addPlayer() {
+            const input = document.getElementById('playerInput');
+            const name = input.value.trim();
+            
+            if (name) {
+                players.push(name);
+                input.value = '';
+                updateUI();
+            }
+        }
+
+        function removePlayer(index) {
+            players.splice(index, 1);
+            updateUI();
+            document.getElementById('pairsList').innerHTML = '';
+        }
+
+        // New countdown function
+        function startCountdownAndGenerate() {
+            const countdownElement = document.getElementById('countdown');
+            document.getElementById('pairsList').innerHTML = '';
+            document.getElementById('generateButton').disabled = true;
+            
+            let count = 3;
+            countdownElement.textContent = count;
+            countdownElement.classList.add('visible');
+            
+            const interval = setInterval(() => {
+                count--;
+                if (count > 0) {
+                    countdownElement.textContent = count;
+                } else {
+                    clearInterval(interval);
+                    countdownElement.classList.remove('visible');
+                    generatePairs();
+                    document.getElementById('generateButton').disabled = false;
+                }
+            }, 1000);
+        }
+
+        function generatePairs() {
+            const shuffled = [...players].sort(() => Math.random() - 0.5);
+            const pairs = [];
+            
+            for (let i = 0; i < shuffled.length; i += 2) {
+                if (i + 1 < shuffled.length) {
+                    pairs.push([shuffled[i], shuffled[i + 1]]);
+                } else {
+                    pairs.push([shuffled[i], 'Lista de espera']);
+                }
+            }
+            
+            document.getElementById('pairsList').innerHTML = `
+                <h3 class="text-lg font-bold mb-2 text-blue-900">Equipos</h3>
+                ${pairs.map((pair, index) => `
+                    <div class="bg-blue-50 p-3 rounded-lg custom-shadow border border-blue-100">
+                        Equipo ${index + 1}: ${pair[0]} & ${pair[1]}
+                    </div>
+                `).join('')}
+            `;
+        }
+
+        document.getElementById('playerInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                addPlayer();
+            }
+        });
+    </script>
+</body>
+</html>
