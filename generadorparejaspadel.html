@@ -11,6 +11,20 @@
             --padel-blue: #1e3d8f;
             --padel-green: #8dc63f;
         }
+        body {
+            background-image: url('https://raw.githubusercontent.com/rafelsr/imagenes/refs/heads/main/fondopadel2.webp');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+        .content-wrapper {
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 1rem;
+            padding: 2rem;
+            margin: 2rem auto;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
         .custom-shadow {
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
         }
@@ -49,61 +63,67 @@
             .countdown {
                 margin: 0.5rem 0;
             }
+            .content-wrapper {
+                margin: 1rem;
+                padding: 1rem;
+            }
         }
     </style>
 </head>
-<body class="bg-gray-50 min-h-screen">
+<body class="min-h-screen">
     <div class="w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="logo-container mb-6">
-            <img src="https://github.com/rafelsr/imagenes/blob/main/generador__parejas.jpg?raw=true" 
-                 alt="Generador Parejas Padel" 
-                 class="custom-shadow rounded-lg">
-        </div>
-
-        <!-- Countdown divs -->
-        <div id="pairsCountdown" class="countdown"></div>
-        <div id="matchesCountdown" class="countdown"></div>
-
-        <!-- Results sections -->
-        <div id="matchesList" class="space-y-2 mb-6"></div>
-        
-        <div id="pairsList" class="space-y-2">
-            <div id="teamsHeader" class="hidden">
-                <button onclick="startMatchesCountdown()" 
-                        id="generateMatchesButton" 
-                        class="w-full bg-green-500 text-white py-3 rounded-lg mb-4 hidden hover:bg-green-600 transition-colors">
-                    <i class="fas fa-table-tennis mr-2"></i>
-                    Generar Partidas
-                </button>
-                <h3 class="text-lg sm:text-xl font-bold mb-2 text-blue-900 text-center">PAREJAS</h3>
+        <div class="content-wrapper">
+            <div class="logo-container mb-6">
+                <img src="https://github.com/rafelsr/imagenes/blob/main/generador__parejas.jpg?raw=true" 
+                     alt="Generador Parejas Padel" 
+                     class="custom-shadow rounded-lg">
             </div>
-            <div id="teamsList" class="grid gap-4 sm:grid-cols-2"></div>
-        </div>
 
-        <button onclick="startPairsCountdown()" 
-                id="generateButton" 
-                class="w-full bg-blue-900 text-white py-3 rounded-lg mt-6 mb-6 hidden hover:bg-blue-800 transition-colors">
-            <i class="fas fa-random mr-2"></i>
-            Generar Parejas
-        </button>
+            <!-- Countdown divs -->
+            <div id="pairsCountdown" class="countdown"></div>
+            <div id="matchesCountdown" class="countdown"></div>
 
-        <div class="flex flex-col sm:flex-row gap-2 mb-6">
-            <input type="text" id="playerInput" 
-                   class="flex-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                   placeholder="Introduce nombre del jugador">
-            <button onclick="addPlayer()" 
-                    class="w-full sm:w-auto bg-green-500 text-white px-4 py-3 sm:py-0 rounded-lg hover:bg-green-600 transition-colors">
-                <i class="fas fa-user-plus"></i>
+            <!-- Results sections -->
+            <div id="matchesList" class="space-y-2 mb-6"></div>
+            
+            <div id="pairsList" class="space-y-2">
+                <div id="teamsHeader" class="hidden">
+                    <button onclick="startMatchesCountdown()" 
+                            id="generateMatchesButton" 
+                            class="w-full bg-green-500 text-white py-3 rounded-lg mb-4 hidden hover:bg-green-600 transition-colors">
+                        <i class="fas fa-table-tennis mr-2"></i>
+                        Generar Partidas
+                    </button>
+                    <h3 class="text-lg sm:text-xl font-bold mb-2 text-blue-900 text-center">PAREJAS</h3>
+                </div>
+                <div id="teamsList" class="grid gap-4 sm:grid-cols-2"></div>
+            </div>
+
+            <button onclick="startPairsCountdown()" 
+                    id="generateButton" 
+                    class="w-full bg-blue-900 text-white py-3 rounded-lg mt-6 mb-6 hidden hover:bg-blue-800 transition-colors">
+                <i class="fas fa-random mr-2"></i>
+                Generar Parejas
             </button>
-        </div>
 
-        <div class="mb-6">
-            <h3 class="text-lg sm:text-xl font-bold mb-2 text-blue-900 text-center" id="playerCount">JUGADORES (0)</h3>
-            <div id="playerList" class="grid gap-2 sm:grid-cols-2"></div>
-        </div>
+            <div class="flex flex-col sm:flex-row gap-2 mb-6">
+                <input type="text" id="playerInput" 
+                       class="flex-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                       placeholder="Introduce nombre del jugador">
+                <button onclick="addPlayer()" 
+                        class="w-full sm:w-auto bg-green-500 text-white px-4 py-3 sm:py-0 rounded-lg hover:bg-green-600 transition-colors">
+                    <i class="fas fa-user-plus"></i>
+                </button>
+            </div>
 
-        <div class="text-right mt-8 text-gray-600 italic">
-            @rafelsr v.0.5
+            <div class="mb-6">
+                <h3 class="text-lg sm:text-xl font-bold mb-2 text-blue-900 text-center" id="playerCount">JUGADORES (0)</h3>
+                <div id="playerList" class="grid gap-2 sm:grid-cols-2"></div>
+            </div>
+
+            <div class="text-right mt-8 text-gray-600 italic">
+                @rafelsr v.0.6
+            </div>
         </div>
     </div>
 
